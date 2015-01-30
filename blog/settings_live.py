@@ -1,4 +1,4 @@
-from scaffold.settings import *
+from blog.settings import *
 
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 2592000 #30 days

@@ -1,5 +1,5 @@
 """
-Django settings for scaffold project.
+Django settings for blog project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -8,7 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-from djangae.settings_base import * #Set up some AppEngine specific stuff
+from djangae.settings_base import *  # Set up some AppEngine specific stuff
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'djangosecure',
     'csp',
     'djangae.contrib.gauth',
-    'djangae', # Djangae should be after Django core/contrib things
+    'djangae',  # Djangae should be after Django core/contrib things
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,12 +65,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "session_csrf.context_processor"
 )
 
+
 def check_session_csrf_enabled():
     if "session_csrf.CsrfMiddleware" not in MIDDLEWARE_CLASSES:
-        return [ "SESSION_CSRF_DISABLED"]
+        return ["SESSION_CSRF_DISABLED"]
 
     return []
-check_session_csrf_enabled.messages = { "SESSION_CSRF_DISABLED" : "Please add 'session_csrf.CsrfMiddleware' to MIDDLEWARE_CLASSES" }
+check_session_csrf_enabled.messages = {
+    "SESSION_CSRF_DISABLED": "Please add 'session_csrf.CsrfMiddleware' to MIDDLEWARE_CLASSES"}
 
 SECURE_CHECKS = [
     "djangosecure.check.sessions.check_session_cookie_secure",
@@ -79,12 +81,12 @@ SECURE_CHECKS = [
     "djangosecure.check.djangosecure.check_sts",
     "djangosecure.check.djangosecure.check_frame_deny",
     "djangosecure.check.djangosecure.check_ssl_redirect",
-    "scaffold.settings.check_session_csrf_enabled"
+    "blog.settings.check_session_csrf_enabled"
 ]
 
-ROOT_URLCONF = 'scaffold.urls'
+ROOT_URLCONF = 'blog.urls'
 
-WSGI_APPLICATION = 'scaffold.wsgi.application'
+WSGI_APPLICATION = 'blog.wsgi.application'
 
 
 # Internationalization
