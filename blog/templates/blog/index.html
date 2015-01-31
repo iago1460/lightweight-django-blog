@@ -1,0 +1,27 @@
+{% extends "blog/base.html" %}
+{% load staticfiles i18n %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link href="{% static "blog/css/index.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block index_class %}class="active"{% endblock %}
+
+{% block site_heading %}{{ site_config.heading }}{% endblock %}
+
+{% block site_subheading %}{{ site_config.subheading }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        {% include "blog/article_list_snippet.html" %}
+        
+        {% if articles.has_next %}
+            <a class="btn btn-default" href="{% url 'articles' %}">{% trans "More Articles" %}</a>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

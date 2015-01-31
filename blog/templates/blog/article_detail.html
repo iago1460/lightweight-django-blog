@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% load staticfiles i18n %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link href="{% static "blog/css/article_detail.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block site_heading %}{{ article.title }}{% endblock %}
+
+{% block site_subheading %}{{ article.subtitle }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <p>{{ article.content }}</p>
+        
+    </div>
+</div>
+{% endblock %}

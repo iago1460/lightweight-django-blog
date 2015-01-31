@@ -7,22 +7,21 @@ threadsafe: true
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup).*
-  script: scaffold.wsgi.application
+  script: blog.wsgi.application
   login: admin
   secure: always
 
-- url: /static/admin/
-  static_dir: sitepackages/django/contrib/admin/static/admin/
-  secure: always
+- url: /static
+  static_dir: sitestatic
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
-  script: scaffold.wsgi.application
+  script: blog.wsgi.application
   secure: always
   login: admin
 
 - url: /.*
-  script: scaffold.wsgi.application
+  script: blog.wsgi.application
   secure: always
 
 skip_files:
@@ -31,4 +30,7 @@ skip_files:
     - install_deps
     - requirements.txt
     - sitepackages/google_appengine*
+    - venv
+    - blog/static
+    - lib/google_appengine
     - (.*)\.pyc

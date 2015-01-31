@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'csp',
     'djangae.contrib.gauth',
     'djangae',  # Djangae should be after Django core/contrib things
+    'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -106,7 +107,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+if DEBUG:
+    STATIC_URL = '/devstatic/'
+else:
+    STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'sitestatic')
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'static'),
+)
 
 
 if DEBUG:
@@ -114,3 +123,5 @@ if DEBUG:
 
 
 from djangae.contrib.gauth.settings import *
+
+AUTH_USER_MODEL = 'djangae.GaeDatastoreUser'

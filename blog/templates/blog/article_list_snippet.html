@@ -1,0 +1,21 @@
+{% load staticfiles i18n %}
+
+{% for article in articles %}
+<div class="post-preview">
+    <a href="{% url 'article_detail' article.slug %}">
+        <h2 class="post-title">
+            {{ article.title }}
+        </h2>
+        <h3 class="post-subtitle">
+            {{ article.subtitle }}
+        </h3>
+    </a>
+    {% comment "TODO: note" %}
+    <!-- <p class="post-meta">{% trans "Posted by" %} <a href="{% url 'user_detail' user.slug %}">{{ article.author }}</a> {% trans "on" %} {{ obj.pub_date|date:"F j, Y" }}</p> -->
+    {% endcomment %}
+    <p class="post-meta">{% trans "Posted by" %} {{ article.author }} {% trans "on" %} {{ article.publication_date|date:"F j, Y" }}</p>
+</div>
+<hr>
+{% empty %}
+<p>{% trans "There's no articles published yet." %}</p>
+{% endfor %}

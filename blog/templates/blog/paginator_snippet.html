@@ -1,0 +1,15 @@
+{% load staticfiles i18n %}
+
+<!-- Pager -->
+<ul class="pager">
+    {% if list.has_next %}
+    <li class="previous">
+        <a href="?page={{ list.next_page_number }}">&larr;{% trans "Older Posts" %}</a>
+    </li>
+    {% endif %}
+    {% if list.has_previous %}
+    <li class="next">
+        <a href="?page={{ list.previous_page_number }}">{% trans "Newer Posts" %}&rarr;</a>
+    </li>
+    {% endif %}
+</ul>

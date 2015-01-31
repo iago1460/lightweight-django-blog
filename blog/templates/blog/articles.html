@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+{% load staticfiles i18n %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link href="{% static "blog/css/articles.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block articles_class %}class="active"{% endblock %}
+
+{% block site_heading %}{% trans "Articles" %}{% endblock %}
+
+{% block site_subheading %}{% trans "The following is a list of all articles" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        {% include "blog/article_list_snippet.html" %}
+        
+        {% with articles as list %}
+            {% include "blog/paginator_snippet.html" %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
