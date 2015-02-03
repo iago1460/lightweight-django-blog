@@ -1,0 +1,60 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %} {% firstof target_user.email target_user.nickname %}{% endblock %}
+
+{% block users_class %}class="active"{% endblock %}
+{% block users_collapse %}{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% trans "Edit User" %}
+            </div>
+            <!-- /.panel-heading -->
+             <div class="panel-body">
+                {% include "dashboard/form_snippet.html" %}
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-info fa-fw"></i> {% trans "Information" %}
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="{% if target_user.slug %}{% url 'user_detail' target_user.slug %}{% else %}#{% endif %}" class="list-group-item">
+                        <i class="fa fa-toggle-on fa-fw"></i> {% trans "Nickname" %}
+                        <span class="pull-right text-muted small">
+                            <em>{% if target_user.nickname %}{{target_user.nickname}}{% else %}-{% endif %}</em>
+                        </span>
+                    </a>
+                </div>
+                <!-- /.list-group -->
+                <li class="list-group-item">
+                    <span class="pull-right text-muted small">
+                        <em>{% if target_user.username %}{{target_user.username}}{% else %}-{% endif %}  </em>
+                     </span>
+                    <i class="fa fa-file-o fa-fw"></i> {% trans "User ID" %}
+                </li>
+                <li class="list-group-item">
+                    <span class="pull-right text-muted small">
+                        <em>{{target_user.date_joined}}</em>
+                     </span>
+                    <i class="fa fa-sign-in fa-fw"></i> {% trans "Creation Date" %}
+                </li>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>
+{% endblock %}

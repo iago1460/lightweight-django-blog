@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{{ heading }}{% endblock %}
+
+
+
+
+
+{% block articles_all_class %}{% if all_articles %}class="active"{% endif %}{% endblock %}
+{% block articles_draft_class %}{% if draft_articles %}class="active"{% endif %}{% endblock %}
+{% block articles_pending_class %}{% if pending_articles %}class="active"{% endif %}{% endblock %}
+{% block articles_published_class %}{% if published_articles %}class="active"{% endif %}{% endblock %}
+
+{% block articles_class %}class="active"{% endblock %}
+{% block articles_collapse %}{% endblock %}
+
+{% block content %}
+
+{% include "dashboard/article_list_snippet.html" %}
+
+{% with article_list=list %}
+    {% include "blog/paginator_snippet.html" with next=_("Next Articles") previous=_("Previous Articles") %}
+{% endwith %}
+
+{% endblock %}
+

@@ -18,7 +18,7 @@
         {% include "blog/article_list_snippet.html" %}
         
         {% with articles as list %}
-            {% include "blog/paginator_snippet.html" %}
+            {% include "blog/paginator_snippet.html" with next=_("Older Posts") reverse=True previous=_("Newer Posts") %}
         {% endwith %}
     </div>
 </div>

@@ -1,15 +1,16 @@
 {% load staticfiles i18n %}
 
-<!-- Pager -->
+{% if is_paginated %}
 <ul class="pager">
-    {% if list.has_next %}
-    <li class="previous">
-        <a href="?page={{ list.next_page_number }}">&larr;{% trans "Older Posts" %}</a>
+    {% if page_obj.has_next %}
+    <li class="{% if reverse %}previous{% else %}next{% endif %}">
+        <a href="?page={{ page_obj.next_page_number }}">{% if reverse %}&larr;{{ next }}{% else %}{{ next }}&rarr;{% endif %}</a>
     </li>
     {% endif %}
-    {% if list.has_previous %}
-    <li class="next">
-        <a href="?page={{ list.previous_page_number }}">{% trans "Newer Posts" %}&rarr;</a>
+    {% if page_obj.has_previous %}
+    <li class="{% if reverse %}next{% else %}previous{% endif %}">
+        <a href="?page={{ page_obj.previous_page_number }}">{% if reverse %}{{ previous }}&rarr;{% else %}&rarr;{{ previous }}{% endif %}</a>
     </li>
     {% endif %}
 </ul>
+{% endif %}

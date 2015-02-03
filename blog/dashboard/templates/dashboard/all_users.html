@@ -1,0 +1,53 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{% trans "All users" %}{% endblock %}
+
+{% block users_class %}class="active"{% endblock %}
+{% block users_all_class %}class="active"{% endblock %}
+{% block users_collapse %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% trans "Users" %}
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Email" %}</th>
+                            <th>{% trans "Nickname" %}</th>
+                            <th>{% trans "Role" %}</th>
+                            <th>{% trans "Delete" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody data-link="row" class="rowlink">
+                        {% for user in user_list %}
+                        <tr class="odd gradeX">
+                            <td><a href="{% url 'dashboard:edit_user' user.id %}"> {{ user.email }}</a></td>
+                            <td>{% if user.nickname %}{{ user.nickname }}{% else %}-{% endif %}</td>
+                            <td>{{ user.get_role_display }}</td>
+                            <td><a class="btn btn-danger btn-circle" href="{% url 'dashboard:delete_user' user.id %}"> <i class="fa fa-times"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+{% with user_list=list %}
+    {% include "blog/paginator_snippet.html" with next=_("Next Users") previous=_("Previous Users") %}
+{% endwith %}
+
+{% endblock %}

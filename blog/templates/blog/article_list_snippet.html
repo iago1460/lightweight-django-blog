@@ -10,10 +10,9 @@
             {{ article.subtitle }}
         </h3>
     </a>
-    {% comment "TODO: note" %}
-    <!-- <p class="post-meta">{% trans "Posted by" %} <a href="{% url 'user_detail' user.slug %}">{{ article.author }}</a> {% trans "on" %} {{ obj.pub_date|date:"F j, Y" }}</p> -->
-    {% endcomment %}
-    <p class="post-meta">{% trans "Posted by" %} {{ article.author }} {% trans "on" %} {{ article.publication_date|date:"F j, Y" }}</p>
+    <p class="post-meta">
+    {% trans "Posted by" %} {% if article.author.slug %}<a href="{% url 'user_detail' article.author.slug %}" class="alert-link">{{ article.author.nickname }}</a>{% else %}{% trans "Anonymous" %}{% endif %} {% trans "on" %} {{ article.publication_date|date:"F j, Y" }}
+    </p>
 </div>
 <hr>
 {% empty %}

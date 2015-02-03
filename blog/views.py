@@ -1,43 +1,44 @@
+from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from blog.models import Article
+from django.views.generic.list import ListView
+
+from blog.models import Article, CustomUser
+from blog.utils import STATUS_CHOICES, has_enough_privileges
+from google.appengine.api import users
 
 
-def home(request):
-    context = {
-        'articles': paginate_articles(request, 5)
-    }
-    return render(request, 'blog/index.html', context)
+class ArticleListView(ListView):
+    model = Article
+    template_name = "blog/articles.html"
+    context_object_name = 'articles'
+    paginate_by = 10
+    queryset = Article.objects.filter(status=STATUS_CHOICES['Published'])
 
 
-def articles(request):
-    context = {
-        'articles': paginate_articles(request, 1)
-    }
-    return render(request, 'blog/articles.html', context)
+class HomeArticleListView(ArticleListView):
+    paginate_by = 5
+    template_name = 'blog/index.html'
 
 
 def article_detail(request, slug):
-    article = get_object_or_404(
-        Article,
+    article = get_object_or_404(Article, slug=slug)
+    if article.status == STATUS_CHOICES['Published']:
+        return render(request, 'blog/article_detail.html', {'article': article})
+    else:
+        if request.user.is_authenticated():
+            if has_enough_privileges(request.user.role, 'Editor') or article.author == request.user:
+                return render(request, 'blog/article_detail.html', {'article': article, 'private': True})
+    raise Http404()
+
+
+def user_detail(request, slug):
+    user = get_object_or_404(
+        CustomUser,
         slug=slug,
-        is_published=True
     )
-    return render(request, 'blog/article_detail.html', {'article': article})
+    return render(request, 'blog/user_detail.html', {'target_user': user})
 
 
-def paginate_articles(request, items):
-    article_list = Article.objects.filter(
-        is_published=True
-    ).order_by('-publication_date')
-    paginator = Paginator(article_list, items)
-    page = request.GET.get('page')
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
-    return articles
+def logout(request):
+    return HttpResponseRedirect(users.create_logout_url(dest_url=reverse('home')))

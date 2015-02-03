@@ -1,56 +1,75 @@
-import datetime
-from collections import Counter
-
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import reverse, NoReverseMatch
+from djangae.contrib.gauth.models import GaeAbstractBaseUser, PermissionsMixin
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.template.defaultfilters import slugify
-from django.utils import timezone
-from django.utils.translation import ugettext as _u
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+
+from blog import settings
+from blog.utils import STATUS_CHOICES, ROLE_CHOICES, unique_slug
 
 
 class Article(models.Model):
 
+    STATUS_CHOICES_TUPLE = (
+        (STATUS_CHOICES['Draft'], _('Draft')),
+        (STATUS_CHOICES['Pending'], _('Pending Review')),
+        (STATUS_CHOICES['Published'], _('Published'))
+    )
+
+    status = models.IntegerField(
+        verbose_name=_('Status'),
+        choices=STATUS_CHOICES_TUPLE,
+        default=STATUS_CHOICES['Draft']
+    )
+
     title = models.CharField(
         verbose_name=_('Title'),
-        max_length=255
+        max_length=255,
     )
+
     subtitle = models.CharField(
         verbose_name=_('Subtitle'),
         max_length=255,
         blank=True,
         null=True
     )
+
     slug = models.SlugField(
         verbose_name=_('Slug'),
         max_length=255,
         unique=True,
-        blank=True,
-        help_text=_(
-            'If changed, the URL will change.'
-        )
+        blank=True
     )
-    is_published = models.BooleanField(
-        verbose_name=_('Is published'),
-        default=False
-    )
+
+    @property
+    def is_published(self):
+        return self.status == STATUS_CHOICES['Published']
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_('Author')
     )
+
     creation_date = models.DateTimeField(
         verbose_name=_('Creation date'),
         auto_now_add=True
     )
+
     publication_date = models.DateTimeField(
-        verbose_name=_('Publication date')
+        verbose_name=_('Publication date'),
+        blank=True,
+        null=True
     )
+
     last_modified_date = models.DateTimeField(
         verbose_name=_('Last modified date'),
         auto_now=True
+    )
+
+    content = models.TextField(
+        verbose_name=_('Content'),
+        help_text=_('Can contain raw HTML.'),
+        blank=True,
+        null=True
     )
 
     class Meta:
@@ -58,90 +77,65 @@ class Article(models.Model):
         verbose_name_plural = _('articles')
 
     def get_absolute_url(self):
-        return reverse('articles:detail', args=[self.slug])
+        return reverse('article_detail', args=[self.slug])
 
     def __unicode__(self):
         return u'%s' % (self.title)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = unique_slug(self.title, Article)
         super(Article, self).save(*args, **kwargs)
 
 
-class SingletonModelManager(models.Manager):
+class CustomUser(GaeAbstractBaseUser, PermissionsMixin):
 
-    def get(self, *args, **kwargs):
-        obj, created = super(
-            SingletonModelManager, self).get_or_create(**kwargs)
-        return obj
-
-
-class SingletonModel(models.Model):
-
-    '''
-    All subclasses should be cached
-    '''
-    objects = SingletonModelManager()
-
-    def save(self, *args, **kwargs):
-        self.pk = 1
-        super(SingletonModel, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        pass
-
-    @classmethod
-    def get_global(cls):
-        obj, created = cls.objects.get_or_create(pk=1)
-        return obj
-
-    class Meta:
-        abstract = True
-
-
-class SiteConfiguration(SingletonModel):
-    site_name = models.CharField(
-        max_length=50,
-        default='Lightweight Blog',
-        verbose_name=_('Site Name')
+    ROLE_CHOICES_TUPLE = (
+        (ROLE_CHOICES['Administrator'], _('Administrator')),
+        (ROLE_CHOICES['Editor'], _('Editor')),
+        (ROLE_CHOICES['Author'], _('Author')),
+        (ROLE_CHOICES['Contributor'], _('Contributor')),
+        (ROLE_CHOICES['Follower'], _('Follower'))
     )
-    heading = models.CharField(
-        max_length=50,
-        default='Clean Blog',
-        verbose_name=_('Heading Name')
+
+    role = models.IntegerField(
+        verbose_name=_('Role'),
+        choices=ROLE_CHOICES_TUPLE,
+        default=ROLE_CHOICES['Follower']
     )
-    subheading = models.CharField(
+
+    nickname = models.CharField(
+        verbose_name=_('Nickname'),
         max_length=50,
-        default='A Clean Blog Theme by Start Bootstrap',
-        verbose_name=_('Subheading Name')
-    )
-    footer = models.CharField(
-        max_length=50,
-        default='Copyright &copy; Your Website 2015',
-        verbose_name=_('Footer')
-    )
-    twitter_address = models.CharField(
-        max_length=50,
-        verbose_name=_('Twitter address'),
         blank=True,
-        null=True
+        null=True,
     )
-    facebook_address = models.CharField(
-        max_length=50,
-        verbose_name=_('facebook address'),
+
+    biographical_info = models.TextField(
+        verbose_name=_('Biographical Info'),
+        help_text=_('Can contain raw HTML.'),
         blank=True,
-        null=True
+        null=True,
     )
-    github_address = models.CharField(
+
+    slug = models.SlugField(
+        verbose_name=_('Slug'),
         max_length=50,
-        verbose_name=_('github address'),
+        unique=True,
         blank=True,
         null=True
     )
 
     def __unicode__(self):
-        return _u('Global Configuration')
+        return u"%s" % self.email
+
+    def save(self, *args, **kwargs):
+        if self.nickname and not self.slug:
+            self.slug = unique_slug(self.nickname, CustomUser)
+        super(CustomUser, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Global Configuration')
-        verbose_name_plural = _('Global Configuration')
+        app_label = "blog"
+        swappable = 'AUTH_USER_MODEL'
+        verbose_name = _('user')
+        verbose_name_plural = _('users')

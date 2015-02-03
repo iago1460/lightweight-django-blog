@@ -1,0 +1,13 @@
+{% load staticfiles i18n %}
+
+<h4>{{ heading }}</h4>
+
+<div class="alert alert-warning">
+    {{ message }}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">{% trans "Yes, I'm sure." %}</button>
+</form>
+

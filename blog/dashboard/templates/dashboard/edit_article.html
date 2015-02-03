@@ -1,0 +1,67 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{{ article.title }}{% endblock %}
+
+{% block articles_class %}class="active"{% endblock %}
+{% block articles_collapse %}{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% trans "Edit Article" %}
+            </div>
+            <!-- /.panel-heading -->
+             <div class="panel-body">
+                {% include "dashboard/form_snippet.html" %}
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-info fa-fw"></i> {% trans "Information" %}
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="{% url "article_detail" article.slug %}" class="list-group-item">
+                        <i class="fa fa-toggle-on fa-fw"></i> {% trans "Status" %}
+                        <span class="pull-right text-muted small">
+                            <em>{{article.get_status_display}}</em>
+                        </span>
+                    </a>
+                </div>
+                <!-- /.list-group -->
+                <li class="list-group-item">
+                    <span class="pull-right text-muted small">
+                        <em>{{article.creation_date}}</em>
+                     </span>
+                    <i class="fa fa-file-o fa-fw"></i> {% trans "Creation Date" %}
+                </li>
+                <li class="list-group-item">
+                    <span class="pull-right text-muted small">
+                        <em>{% if article.publication_date %}{{article.publication_date}}{% else %}-{% endif %}</em>
+                     </span>
+                    <i class="fa fa-send fa-fw"></i> {% trans "Publication Date" %}
+                </li>
+                <li class="list-group-item">
+                    <span class="pull-right text-muted small">
+                        <em>{{article.last_modified_date}}</em>
+                     </span>
+                    <i class="fa fa-clock-o fa-fw"></i> {% trans "Last Modified Date" %}
+                </li>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>
+                    
+{% endblock %}

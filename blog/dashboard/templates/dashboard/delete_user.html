@@ -1,0 +1,17 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{% trans "Are you sure to delete this user?" %}{% endblock %}
+
+{% block users_class %}class="active"{% endblock %}
+{% block users_collapse %}{% endblock %}
+
+{% trans "Are you sure you want to delete this object? Its related items will be deleted." %}
+{% block content %}
+
+{% with heading=object.email %}
+    {% include "dashboard/delete_form_snippet.html" with message=_("The user and his related articles will be permanently deleted and cannot be recovered!") %}
+{% endwith %}
+
+{% endblock %}

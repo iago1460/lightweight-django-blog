@@ -15,7 +15,7 @@ handlers:
   static_dir: sitestatic
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
-- url: /admin.*
+- url: /dashboard.*
   script: blog.wsgi.application
   secure: always
   login: admin
@@ -32,5 +32,6 @@ skip_files:
     - sitepackages/google_appengine*
     - venv
     - blog/static
+    - blog/dashboard/static
     - lib/google_appengine
     - (.*)\.pyc

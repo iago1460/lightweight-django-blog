@@ -18,7 +18,7 @@
         
         {% include "blog/article_list_snippet.html" %}
         
-        {% if articles.has_next %}
+        {% if page_obj.has_next %}
             <a class="btn btn-default" href="{% url 'articles' %}">{% trans "More Articles" %}</a>
         {% endif %}
         

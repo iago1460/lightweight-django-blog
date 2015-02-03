@@ -1,0 +1,63 @@
+from django.conf.urls import patterns, url
+from blog.dashboard import views
+
+
+urlpatterns = patterns(
+    '',
+    url(r'^$',
+        views.index,
+        name='index'
+        ),
+    url(r'^profile/$',
+        views.edit_profile,
+        name='profile'
+        ),
+    url(r'^settings/$',
+        views.edit_settings,
+        name='settings'
+        ),
+    url(r'^users/$',
+        views.UserListView.as_view(),
+        name='users'
+        ),
+    url(r'^users/edit/(?P<pk>\d+)/$',
+        views.edit_user,
+        name='edit_user'
+        ),
+    url(r'^users/delete/(?P<pk>\d+)/$',
+        views.DeleteUserView.as_view(),
+        name='delete_user'
+        ),
+    url(r'^users/add$',
+        views.add_user,
+        name='add_user'
+        ),
+    url(r'^articles/$',
+        views.ArticleListView.as_view(),
+        name='articles'
+        ),
+    url(r'^articles/draft/$',
+        views.ArticleDraftListView.as_view(),
+        name='draft_articles'
+        ),
+    url(r'^articles/published/$',
+        views.ArticlePublishedListView.as_view(),
+        name='published_articles'
+        ),
+    url(r'^articles/pending/$',
+        views.ArticlePendingListView.as_view(),
+        name='pending_articles'
+        ),
+    url(r'^articles/add$',
+        views.add_article,
+        name='add_article'
+        ),
+    url(r'^articles/edit/(?P<pk>\d+)/$',
+        views.edit_article,
+        name='edit_article'
+        ),
+    url(r'^articles/delete/(?P<pk>\d+)/$',
+        views.DeleteArticleView.as_view(),
+        name='delete_article'
+        ),
+)

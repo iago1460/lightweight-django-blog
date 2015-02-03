@@ -1,0 +1,47 @@
+{% load staticfiles i18n %}
+{% load permissions_extras %}
+
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% trans "Articles" %}
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Title" %}</th>
+                            <th>{% trans "Author" %}</th>
+                            {% if show_status %}<th>{% trans "Status" %}</th>{% endif %}
+                            {% if user|has_permission_level:"Author" %}<th>{% trans "Delete" %}</th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody data-link="row" class="rowlink">
+                        {% for article in article_list %}
+                        <tr class="odd gradeX">
+                            
+                            {% if user.get_role_display == 'Contributor' and article.get_status_display == 'Published' %}
+                                <td>{{ article.title|truncatechars:60 }}</td>
+                            {% else %}
+                                <td><a href="{% url 'dashboard:edit_article' article.id %}"> {{ article.title|truncatechars:60 }}</a></td>
+                            {% endif %}
+                            <td>{% firstof article.author.nickname article.author.email %}</td>
+                            {% if show_status %}<td>{{ article.get_status_display }}</td>{% endif %}
+                            {% if user|has_permission_level:"Author" %}<td><a class="btn btn-danger btn-circle" href="{% url 'dashboard:delete_article' article.id %}"> <i class="fa fa-times"></i></a></td>{% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+
+

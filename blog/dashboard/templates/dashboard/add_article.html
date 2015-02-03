@@ -1,0 +1,16 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{% trans "Add article" %}{% endblock %}
+
+{% block articles_class %}class="active"{% endblock %}
+{% block articles_add_class %}class="active"{% endblock %}
+{% block articles_collapse %}{% endblock %}
+
+
+{% block content %}
+
+{% include "dashboard/form_snippet.html" %}
+
+{% endblock %}

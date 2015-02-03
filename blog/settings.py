@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth',
     'djangae',  # Djangae should be after Django core/contrib things
     'blog',
+    'blog.dashboard',
+    'django_forms_bootstrap',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -72,6 +74,7 @@ def check_session_csrf_enabled():
         return ["SESSION_CSRF_DISABLED"]
 
     return []
+
 check_session_csrf_enabled.messages = {
     "SESSION_CSRF_DISABLED": "Please add 'session_csrf.CsrfMiddleware' to MIDDLEWARE_CLASSES"}
 
@@ -123,5 +126,8 @@ if DEBUG:
 
 
 from djangae.contrib.gauth.settings import *
+# Override settings
 
-AUTH_USER_MODEL = 'djangae.GaeDatastoreUser'
+ALLOW_USER_PRE_CREATION = True
+AUTH_USER_MODEL = 'blog.CustomUser'
+#LOGIN_REDIRECT_URL = 'dashboard'

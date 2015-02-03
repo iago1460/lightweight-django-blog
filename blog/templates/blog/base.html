@@ -1,6 +1,6 @@
 {% load staticfiles i18n %}
 {% load global_settings_extras %}
-{% get_global_model 'blog.SiteConfiguration' as site_config %}
+{% get_global_model 'dashboard.SiteConfiguration' as site_config %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +57,13 @@
                 <ul class="nav navbar-nav navbar-right">
 				    <li {% block index_class %}{% endblock %}><a href="/">{% trans "home" %}</a></li>
 				    <li {% block articles_class %}{% endblock %}><a href="{% url 'articles' %}">{% trans "articles" %}</a></li>
+				    
+				    {% if user.is_authenticated %}
+				    <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
+					{% else %}
+				    <li {% block login_class %}{% endblock %}><a href="{% url 'dashboard:index' %}">{% trans "Log in" %}</a></li>
+					{% endif %}
+				    
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

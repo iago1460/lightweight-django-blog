@@ -1,0 +1,17 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+
+
+{% block site_heading %}{% trans "Are you sure to delete this article?" %}{% endblock %}
+
+{% block articles_class %}class="active"{% endblock %}
+{% block articles_collapse %}{% endblock %}
+
+
+{% block content %}
+
+{% with heading=object.title %}
+    {% include "dashboard/delete_form_snippet.html" with message=_("The article will be permanently deleted and cannot be recovered!") %}
+{% endwith %}
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles i18n %}
+{% load permissions_extras %}
+
+
+{% block site_heading %}{% trans "Dashboard" %}{% endblock %}
+
+{% block index_class %}class="active"{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-file-text fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ published_articles }}</div>
+                        <div>{% trans "Published Articles" %}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'dashboard:published_articles' %}">
+                <div class="panel-footer">
+                    <span class="pull-left">{% trans "View Details" %}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-legal fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ pending_articles }}</div>
+                        <div>{% trans "Pending review Articles" %}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'dashboard:pending_articles' %}">
+                <div class="panel-footer">
+                    <span class="pull-left">{% trans "View Details" %}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ draft_articles }}</div>
+                        <div>{% trans "Draft Articles" %}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'dashboard:draft_articles' %}">
+                <div class="panel-footer">
+                    <span class="pull-left">{% trans "View Details" %}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-users fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ users }}</div>
+                        <div>{% trans "Total Users" %}</div>
+                    </div>
+                </div>
+            </div>
+            {% if user|has_permission_level:"Administrator" %}
+            <a href="{% url 'dashboard:users' %}">
+                <div class="panel-footer">
+                    <span class="pull-left">{% trans "View Details" %}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock %}
