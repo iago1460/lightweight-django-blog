@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
@@ -29,8 +29,7 @@ def index(request):
 
 
 @login_required
-# TODO:uncomment
-#@has_permission_level(group_name='Contributor')
+@has_permission_level(group_name='Contributor')
 def edit_profile(request):
     user = request.user
     form = ProfileForm(instance=user)

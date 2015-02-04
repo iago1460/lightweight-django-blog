@@ -130,6 +130,9 @@ class CustomUser(GaeAbstractBaseUser, PermissionsMixin):
         return u"%s" % self.email
 
     def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.role = ROLE_CHOICES['Administrator']
+        # Create a slug when nickname exists
         if self.nickname and not self.slug:
             self.slug = unique_slug(self.nickname, CustomUser)
         super(CustomUser, self).save(*args, **kwargs)

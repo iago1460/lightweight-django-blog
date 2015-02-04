@@ -82,9 +82,8 @@ class ArticleContributorForm(ArticleForm):
 class ProfileForm(forms.ModelForm):
 
     class Meta:
-        # TODO: remove 'role'
         model = CustomUser
-        fields = ['role', 'nickname', 'biographical_info']
+        fields = ['nickname', 'biographical_info']
 
 
 class ConfigurationForm(forms.ModelForm):

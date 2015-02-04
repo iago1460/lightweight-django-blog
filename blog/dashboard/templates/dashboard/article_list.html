@@ -4,10 +4,6 @@
 
 {% block site_heading %}{{ heading }}{% endblock %}
 
-
-
-
-
 {% block articles_all_class %}{% if all_articles %}class="active"{% endif %}{% endblock %}
 {% block articles_draft_class %}{% if draft_articles %}class="active"{% endif %}{% endblock %}
 {% block articles_pending_class %}{% if pending_articles %}class="active"{% endif %}{% endblock %}
@@ -18,11 +14,19 @@
 
 {% block content %}
 
-{% include "dashboard/article_list_snippet.html" %}
+    {% if article_list %}
+        {% include "dashboard/article_list_snippet.html" %}
 
-{% with article_list=list %}
-    {% include "blog/paginator_snippet.html" with next=_("Next Articles") previous=_("Previous Articles") %}
-{% endwith %}
+        {% with article_list=list %}
+            {% include "blog/paginator_snippet.html" with next=_("Next Articles") previous=_("Previous Articles") %}
+        {% endwith %}
+    {% else %}
+        <div class="row">
+            <div class="alert alert-info">
+                {% trans "There aren't any articles yet" %}
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock %}
 

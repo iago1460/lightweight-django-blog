@@ -12,12 +12,12 @@ class ArticleListView(ListView):
     model = Article
     template_name = "blog/articles.html"
     context_object_name = 'articles'
-    paginate_by = 10
+    paginate_by = 5
     queryset = Article.objects.filter(status=STATUS_CHOICES['Published'])
 
 
 class HomeArticleListView(ArticleListView):
-    paginate_by = 5
+    paginate_by = 3
     template_name = 'blog/index.html'
 
 

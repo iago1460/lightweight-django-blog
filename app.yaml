@@ -14,11 +14,11 @@ handlers:
 - url: /static
   static_dir: sitestatic
 
-# Set Django admin to be login:admin as well as Django's is_staff restriction
+# Set dashboard to be login:required
 - url: /dashboard.*
   script: blog.wsgi.application
   secure: always
-  login: admin
+  login: required
 
 - url: /.*
   script: blog.wsgi.application

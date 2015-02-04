@@ -23,7 +23,7 @@ from .boot import get_app_config
 SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
