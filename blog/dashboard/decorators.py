@@ -24,5 +24,7 @@ def has_permission_level(group_name):
             if not has_enough_privileges(request.user.role, group_name):
                 return redirect('dashboard:index')
             return view(request, *args, **kwargs)
+
         return wrapper
+
     return decorator

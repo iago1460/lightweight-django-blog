@@ -65,14 +65,19 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{% url 'dashboard:profile' %}"><i class="fa fa-user fa-fw"></i> {% trans "User Profile" %}</a>
+                        {% if user|has_permission_level:"Contributor" %}
+                        <li>
+                            <a href="{% url 'dashboard:profile' %}"><i class="fa fa-user fa-fw"></i> {% trans "User Profile" %}</a>
                         </li>
+                        {% endif %}
                         {% if user|has_permission_level:"Administrator" %}
-                        <li><a href="{% url 'dashboard:settings' %}"><i class="fa fa-gear fa-fw"></i> {% trans "Settings" %}</a>
+                        <li>
+                            <a href="{% url 'dashboard:settings' %}"><i class="fa fa-gear fa-fw"></i> {% trans "Settings" %}</a>
                         </li>
                         {% endif %}
                         <li class="divider"></li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> {% trans "Logout" %}</a>
+                        <li>
+                            <a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> {% trans "Logout" %}</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -87,7 +92,6 @@
                         <li>
                             <a href="{% url 'dashboard:index' %}" {% block index_class %}{% endblock %}><i class="fa fa-dashboard fa-fw"></i> {% trans "Dashboard" %}</a>
                         </li>
-                        
                         {% if user|has_permission_level:"Contributor" %}
                         <li {% block articles_class %}{% endblock %}>
                             <a href="{% url 'dashboard:articles' %}"><i class="fa fa-file-text fa-fw"></i> {% trans "Articles" %}<span class="fa arrow"></span></a>
@@ -95,7 +99,6 @@
                                 <li>
                                     <a href="{% url 'dashboard:articles' %}" {% block articles_all_class %}{% endblock %}>{% trans "All articles" %}</a>
                                 </li>
-                                
                                 {% if user|has_permission_level:"Contributor" %}
                                 <li>
                                     <a href="#">{% trans "Filter" %} <span class="fa arrow"></span></a>
@@ -120,7 +123,6 @@
                             <!-- /.nav-second-level -->
                         </li>
                         {% endif %}
-                        
                         {% if user|has_permission_level:"Administrator" %}
                         <li {% block users_class %}{% endblock %}>
                             <a href="{% url 'dashboard:users' %}"><i class="fa fa-users fa-fw"></i> {% trans "Users" %}<span class="fa arrow"></span></a>
@@ -135,15 +137,16 @@
                              <!-- /.nav-second-level -->
                         </li>
                         {% endif %}
+                        {% if user|has_permission_level:"Contributor" %}
                         <li>
                              <a href="{% url 'dashboard:profile' %}" {% block profile_class %}{% endblock %}><i class="fa fa-user fa-fw"></i> {% trans "User Profile" %}</a>
                         </li>
+                        {% endif %}
                         {% if user|has_permission_level:"Administrator" %}
                         <li>
                             <a href="{% url 'dashboard:settings' %}" {% block settings_class %}{% endblock %}><i class="fa fa-wrench fa-fw"></i> {% trans "Settings" %}</a>
                         </li>
                         {% endif %}
-                        
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

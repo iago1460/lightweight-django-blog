@@ -22,6 +22,7 @@
                     </div>
                 </div>
             </div>
+            {% if user|has_permission_level:"Contributor" %}
             <a href="{% url 'dashboard:published_articles' %}">
                 <div class="panel-footer">
                     <span class="pull-left">{% trans "View Details" %}</span>
@@ -29,6 +30,7 @@
                     <div class="clearfix"></div>
                 </div>
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="col-lg-3 col-md-6">
@@ -44,6 +46,7 @@
                     </div>
                 </div>
             </div>
+            {% if user|has_permission_level:"Contributor" %}
             <a href="{% url 'dashboard:pending_articles' %}">
                 <div class="panel-footer">
                     <span class="pull-left">{% trans "View Details" %}</span>
@@ -51,6 +54,7 @@
                     <div class="clearfix"></div>
                 </div>
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="col-lg-3 col-md-6">
@@ -66,6 +70,7 @@
                     </div>
                 </div>
             </div>
+            {% if user|has_permission_level:"Contributor" %}
             <a href="{% url 'dashboard:draft_articles' %}">
                 <div class="panel-footer">
                     <span class="pull-left">{% trans "View Details" %}</span>
@@ -73,6 +78,7 @@
                     <div class="clearfix"></div>
                 </div>
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="col-lg-3 col-md-6">
@@ -100,5 +106,13 @@
         </div>
     </div>
 </div>
-<!-- /.row -->
+
+{% if user.get_role_display == 'Follower' %}
+<div class="row">
+    <div class="alert alert-success">
+        {% trans "Thank you for subscribe!" %}
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

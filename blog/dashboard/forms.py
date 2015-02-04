@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from blog.dashboard.models import SiteConfiguration
 from blog.models import CustomUser, Article
 from blog.utils import STATUS_CHOICES
+from django.contrib.auth import get_user_model
 
 
 class UserForm(forms.ModelForm):
@@ -21,6 +22,7 @@ class AddUserForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
+        email = get_user_model().objects.normalize_email(email)
         if email and CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError(
                 _('This email address is already registered.'))
@@ -80,8 +82,9 @@ class ArticleContributorForm(ArticleForm):
 class ProfileForm(forms.ModelForm):
 
     class Meta:
+        # TODO: remove 'role'
         model = CustomUser
-        fields = ['nickname', 'biographical_info']
+        fields = ['role', 'nickname', 'biographical_info']
 
 
 class ConfigurationForm(forms.ModelForm):

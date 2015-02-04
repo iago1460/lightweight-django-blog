@@ -29,6 +29,8 @@ def index(request):
 
 
 @login_required
+# TODO:uncomment
+#@has_permission_level(group_name='Contributor')
 def edit_profile(request):
     user = request.user
     form = ProfileForm(instance=user)
