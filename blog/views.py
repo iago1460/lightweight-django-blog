@@ -13,7 +13,9 @@ class ArticleListView(ListView):
     template_name = "blog/articles.html"
     context_object_name = 'articles'
     paginate_by = 5
-    queryset = Article.objects.filter(status=STATUS_CHOICES['Published'])
+    queryset = Article.objects.filter(
+        status=STATUS_CHOICES['Published']
+    ).order_by('-publication_date')
 
 
 class HomeArticleListView(ArticleListView):
