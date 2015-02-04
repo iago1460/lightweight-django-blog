@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.utils import timezone
 
 from blog.utils import ROLE_CHOICES, STATUS_CHOICES
 from blog.models import Article
+import datetime
 
 
 class ArticleTests(TestCase):
@@ -40,6 +42,42 @@ class ArticleTests(TestCase):
 
         article.status = STATUS_CHOICES['Published']
         self.assertTrue(article.is_published)
+
+    def test_publication_date(self):
+        article = Article.objects.create(
+            status=STATUS_CHOICES['Draft'],
+            title='Article 1',
+            author=self.author
+        )
+        self.assertIsNone(article.publication_date)
+
+        article.status = STATUS_CHOICES['Published']
+        article.save()
+        self.assertIsNotNone(article.publication_date)
+
+    def test_publication_date_2(self):
+        pub_date = timezone.now() - datetime.timedelta(hours=5)
+        article = Article.objects.create(
+            status=STATUS_CHOICES['Published'],
+            title='Article 1',
+            author=self.author,
+            publication_date=pub_date
+        )
+        self.assertEqual(pub_date, article.publication_date)
+
+        article.title = 'Article 2'
+        article.save()
+        self.assertEqual(pub_date, article.publication_date)
+
+        article.title = 'Article 3'
+        article.status = STATUS_CHOICES['Pending']
+        article.save()
+        self.assertEqual(pub_date, article.publication_date)
+
+        article.title = 'Article 4'
+        article.status = STATUS_CHOICES['Published']
+        article.save()
+        self.assertNotEqual(pub_date, article.publication_date)
 
 
 class CustomUser(TestCase):

@@ -2,9 +2,10 @@ from djangae.contrib.gauth.models import GaeAbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from blog import settings
-from blog.utils import STATUS_CHOICES, ROLE_CHOICES, unique_slug
+from blog.utils import STATUS_CHOICES, ROLE_CHOICES, unique_slug, has_changed
 
 
 class Article(models.Model):
@@ -83,6 +84,13 @@ class Article(models.Model):
         return u'%s' % (self.title)
 
     def save(self, *args, **kwargs):
+        if self.status == STATUS_CHOICES['Published']:
+            if not self.id and not self.publication_date:
+                self.publication_date = timezone.now()
+
+            if has_changed(self, 'status'):
+                self.publication_date = timezone.now()
+
         if not self.slug:
             self.slug = unique_slug(self.title, Article)
         super(Article, self).save(*args, **kwargs)

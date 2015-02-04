@@ -204,10 +204,7 @@ def edit_article(request, pk):
         form = get_article_form(
             request_user=request.user, instance=article, data=request.POST)
         if form.is_valid():
-            new_article = form.save(commit=False)
-            if form.cleaned_data['status'] == STATUS_CHOICES['Published'] and has_changed(article, 'status'):
-                new_article.publication_date = datetime.datetime.now()
-            new_article.save()
+            form.save()
             return render(request, "dashboard/edit_article.html", {'form': form, 'article': article, 'saved': True})
     return render(request, "dashboard/edit_article.html", {'form': form, 'article': article})
 

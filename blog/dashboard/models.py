@@ -49,7 +49,7 @@ class SiteConfiguration(SingletonModel):
     )
 
     subheading = models.CharField(
-        max_length=50,
+        max_length=100,
         default='A Clean Blog Theme by Start Bootstrap',
         verbose_name=_('Subheading Name')
     )
@@ -61,21 +61,21 @@ class SiteConfiguration(SingletonModel):
     )
 
     twitter_address = models.CharField(
-        max_length=50,
+        max_length=255,
         verbose_name=_('Twitter address'),
         blank=True,
         null=True
     )
 
     facebook_address = models.CharField(
-        max_length=50,
+        max_length=255,
         verbose_name=_('facebook address'),
         blank=True,
         null=True
     )
 
     github_address = models.CharField(
-        max_length=50,
+        max_length=255,
         verbose_name=_('github address'),
         blank=True,
         null=True
