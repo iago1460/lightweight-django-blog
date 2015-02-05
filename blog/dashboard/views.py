@@ -1,5 +1,3 @@
-import datetime
-
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
@@ -12,7 +10,7 @@ from blog.dashboard.forms import UserForm, ConfigurationForm, ProfileForm,\
     ArticleForm, ArticleAuthorForm, ArticleContributorForm, AddUserForm
 from blog.dashboard.models import SiteConfiguration
 from blog.models import CustomUser, Article
-from blog.utils import has_enough_privileges, has_changed, STATUS_CHOICES,\
+from blog.utils import has_enough_privileges, STATUS_CHOICES,\
     ROLE_CHOICES
 from django.http.response import Http404
 
