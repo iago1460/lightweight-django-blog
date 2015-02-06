@@ -4,13 +4,33 @@ This is a lightweight blogging tool with create, edit and delete functionality f
 
 [Lightweight Django Blog](https://lightweight-django-blog.appspot.com/) uses [Clean Blog](http://startbootstrap.com/template-overviews/clean-blog/), a stylish, responsive blog theme for [Bootstrap](http://getbootstrap.com/) and [SB Admin 2](http://startbootstrap.com/template-overviews/sb-admin-2/), an admin dashboard template.
 
-
 ## Features
 
 * Translatable project
 * User Roles
 * SEO friendly urls
 * Complete admin interface
+
+## Get started
+In the `lightweight-django-blog` directory, run:
+
+    ./install_deps
+    python manage.py collectstatic
+    python manage.py test
+    python manage.py runserver
+
+## Deployment
+Create a Google App Engine project. Edit `app.yaml` and change `application: lightweight-django-blog` to `application: your-app-id` and edit `settings.py` changing `DEBUG = True` to `DEBUG = False`.
+
+Then, if you're in the `lightweight-django-blog` directory, run:
+
+    $ appcfg.py update ./
+
+If you have two-factor authentication enabled in your Google account, run:
+
+    $ appcfg.py --oauth2 update ./
+
+
 
 ## User Roles
 
