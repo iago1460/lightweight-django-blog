@@ -10,6 +10,7 @@ This is a lightweight blogging tool with create, edit and delete functionality f
 * User Roles
 * SEO friendly urls
 * Complete admin interface
+* Strict Content Security Policy (CSP)
 
 ## Get started
 In the `lightweight-django-blog` directory, run:
@@ -31,6 +32,10 @@ If you have two-factor authentication enabled in your Google account, run:
     $ appcfg.py --oauth2 update ./
 
 
+## Content Security Policy (CSP)
+[Content Security Policy (CSP)](http://www.w3.org/TR/CSP/) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware.
+
+Lightweight Django Blog uses [Django-CSP](https://github.com/mozilla/django-csp) in order to add Content-Security-Policy headers.
 
 ## User Roles
 

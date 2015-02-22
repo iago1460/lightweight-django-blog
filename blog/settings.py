@@ -121,8 +121,12 @@ STATICFILES_DIRS = (
 )
 
 
-if DEBUG:
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+# Keep our policy as strict as possible
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'",)
 
 
 from djangae.contrib.gauth.settings import *
